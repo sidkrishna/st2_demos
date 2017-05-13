@@ -1,0 +1,37 @@
+---
+version: '2.0'
+
+st2_demos.PC_workflow:
+  input:
+    - username
+    - password
+    - mgmt_ip
+    - ports
+    - port_channel_id
+    - protocol
+    - mode
+    - intf_type
+  tasks:
+    Create_PC:
+      # [251, 146]
+      action: network_essentials.create_port_channel
+      input:
+        username: "admin"
+        password: <% $.password %>
+        intf_type: <% $.intf_type %>
+        mgmt_ip: <% $.mgmt_ip %>
+        ports: <% $.ports %>
+        port_channel_id: <% $.port_channel_id %>
+        protocol: <% $.protocol %> 
+        mode: <% $.mode %>
+      on-success:
+        - Remove_PC
+    Remove_PC:
+      # [248, 342]
+      action: vdx.interface_remove_port_channel
+      input:
+        username: "admin"
+        ip: <% $.mgmt_ip %>
+        password: <% $.password %>
+        port_int: <% $.port_channel_id %>
+        

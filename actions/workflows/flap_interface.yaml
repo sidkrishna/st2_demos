@@ -1,0 +1,28 @@
+---
+version: '2.0'
+
+st2_demos.flap_interface:
+  input:
+    - interface
+    - Switch
+  tasks:
+    task1:
+      # [289, 262]
+      action: clicrud.config_command
+      on-success:
+        - no_shut
+    begin message:
+      # [261, 85]
+      action: chatops.post_message
+      on-success:
+        - task1
+    no_shut:
+      # [326, 488]
+      action: clicrud.config_command
+      on-success:
+        - final_result
+      on-error:
+        - final_result
+    final_result:
+      # [325, 655]
+      action: chatops.post_result
